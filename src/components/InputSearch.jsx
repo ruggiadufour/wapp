@@ -6,15 +6,26 @@ import getCities from "../utils/api/getCities";
 import getForecastByCoordinates from "../utils/api/getForecastByCoordinates";
 import { addCity } from "../store/forecast";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 let onDebouncedChange = () => {};
 
 export default function InputSearch() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [cityName, setCityName] = useState("");
   const [searchByCoordinates, setSearchByCoordinates] = useState(false);
   const [cityOptions, setCityOptions] = useState([]);
+  const [coordinates, setCoordinates] = useState({
+    latitude: "",
+    longitude: "",
+  });
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    onDebouncedChange = debounce((value) => onChange(value), 1500);
+  }, []);
 
   async function onChange(value) {
     const { data, errors } = await getCities(value);
@@ -38,10 +49,6 @@ export default function InputSearch() {
     }));
   }
 
-  useEffect(() => {
-    onDebouncedChange = debounce((value) => onChange(value), 1500);
-  }, []);
-
   function handleChange(e) {
     setLoading(true);
 
@@ -50,7 +57,7 @@ export default function InputSearch() {
     onDebouncedChange(value);
   }
 
-  async function onSelectOption(option) {
+  async function searchCity(option) {
     const { latitude, longitude } = option;
     console.log(latitude, longitude);
     setLoading(true);
@@ -60,26 +67,47 @@ export default function InputSearch() {
       longitude
     );
     setLoading(false);
-    console.log(errors);
-    console.log(data);
     dispatch(addCity(data));
+    navigate("/search");
+  }
+
+  function handleCoordinates(e) {
+    e.preventDefault();
+    searchCity(coordinates);
   }
 
   return (
     <div className="relative">
       {searchByCoordinates ? (
-        <div className="flex gap-2">
-          <Input placeholder="Latitude" />
-          <Input placeholder="Longitude" />
-        </div>
+        <form onSubmit={handleCoordinates} className="flex gap-2">
+          <Input
+            value={coordinates.latitude}
+            onChange={({ target }) =>
+              setCoordinates((c) => ({ ...c, latitude: target.value }))
+            }
+            required
+            placeholder="Latitude"
+            name="input-search"
+          />
+          <Input
+            value={coordinates.longitude}
+            onChange={({ target }) =>
+              setCoordinates((c) => ({ ...c, longitude: target.value }))
+            }
+            required
+            placeholder="Longitude"
+          />
+          <Button type="submit">Search</Button>
+        </form>
       ) : (
         <InputOptions
           options={cityOptions}
           value={cityName}
           onChange={handleChange}
-          onSelectOption={onSelectOption}
+          onSelectOption={searchCity}
           placeholder="Search a city 🏢️"
           autoComplete="off"
+          name="input-search"
           loading={loading}
         />
       )}

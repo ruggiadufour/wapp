@@ -27,11 +27,19 @@ export const forecastSlice = createSlice({
   initialState,
   reducers: {
     addCity: (state, action) => {
-      state.searches.push(action.payload);
+      const alreadySearched = state.searches.some(
+        (forecast) => forecast.id == action.payload.id
+      );
+      if (alreadySearched) return;
+
+      if (state.searches.length === 5) {
+        state.searches.pop();
+      }
+      state.searches.unshift(action.payload);
     },
     removeCity: (state, action) => {
       state.searches = state.searches.filter(
-        (search) => search.id === action.payload
+        (search) => search.id !== action.payload
       );
     },
   },
