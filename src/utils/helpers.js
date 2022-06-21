@@ -71,8 +71,10 @@ export function emojiFromIconCode(iconCode) {
 export async function fetcher(...args) {
   let data = null,
     errors = null;
+  const [url, ...restArgs] = args;
+  const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${url}`;
   try {
-    const res = await fetch(...args);
+    const res = await fetch(proxyUrl, ...restArgs);
     const json = await res.json();
     data = json.data || json;
   } catch (err) {
