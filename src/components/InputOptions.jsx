@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import debounce from "../utils/debounce";
+import { debounce } from "../utils/helpers";
 import Input from "./Input";
 
 let onDebouncedChange = () => {};
@@ -10,7 +10,7 @@ export default function InputOptions({
   onSelectOption = () => {},
   ...props
 }) {
-  const [showOptions, setShowOptions] = useState(true);
+  const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
     onDebouncedChange = debounce((value) => setShowOptions(value), 1000);

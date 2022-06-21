@@ -1,5 +1,5 @@
 import { OPENWEATHER_KEY } from "../publicKeys";
-import fetcher from "../fetcher";
+import { fetcher } from "../helpers";
 import { formatForecastData } from "../helpers";
 
 export default async function (latitude, longitude) {

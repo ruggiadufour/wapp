@@ -1,4 +1,4 @@
-function formatForecastData({ city, list }) {
+export function formatForecastData({ city, list }) {
   const formatedList = list.map((obj) => ({
     date: obj.dt_txt,
     temp: kelvinToCelcius(obj.main.temp),
@@ -19,7 +19,7 @@ function formatForecastData({ city, list }) {
   };
 }
 
-function formatDate(dateString) {
+export function formatDate(dateString) {
   return new Intl.DateTimeFormat("en", {
     month: "long",
     day: "numeric",
@@ -27,24 +27,24 @@ function formatDate(dateString) {
   }).format(new Date(dateString));
 }
 
-function dayNameFromDate(dateString) {
+export function dayNameFromDate(dateString) {
   return new Intl.DateTimeFormat("en", {
     weekday: "long",
   }).format(new Date(dateString));
 }
 
-function hourFromDate(dateString) {
+export function hourFromDate(dateString) {
   return new Intl.DateTimeFormat("en", {
     hour: "numeric",
     minute: "numeric",
   }).format(new Date(dateString));
 }
 
-function kelvinToCelcius(temp) {
+export function kelvinToCelcius(temp) {
   return (parseFloat(temp) - 273.15).toFixed(2);
 }
 
-function emojiFromIconCode(iconCode) {
+export function emojiFromIconCode(iconCode) {
   const dict = {
     "01d": "☀️",
     "01n": "🌑️",
@@ -68,4 +68,26 @@ function emojiFromIconCode(iconCode) {
   return dict[iconCode] || "☀️";
 }
 
-export { formatForecastData, formatDate, dayNameFromDate, hourFromDate };
+export async function fetcher(...args) {
+  let data = null,
+    errors = null;
+  try {
+    const res = await fetch(...args);
+    const json = await res.json();
+    data = json.data || json;
+  } catch (err) {
+    errors = err;
+  }
+  return { data, errors };
+}
+
+export function debounce(cb, delay = 1000) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      cb(...args);
+    }, delay);
+  };
+}

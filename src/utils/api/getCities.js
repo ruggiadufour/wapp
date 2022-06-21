@@ -1,5 +1,5 @@
 import { POSITIONSTACK_KEY } from "../publicKeys";
-import fetcher from "../fetcher";
+import { fetcher } from "../helpers";
 
 export default async function (query) {
   const url = `http://api.positionstack.com/v1/forward?access_key=${POSITIONSTACK_KEY}&query=${query}`;

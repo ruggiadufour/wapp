@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import InputOptions from "./InputOptions";
-import debounce from "../utils/debounce";
+import { debounce } from "../utils/helpers";
 import getCities from "../utils/api/getCities";
 import getForecastByCoordinates from "../utils/api/getForecastByCoordinates";
 import { addCity } from "../store/forecast";
@@ -28,6 +28,7 @@ export default function InputSearch() {
   }, []);
 
   async function onChange(value) {
+    /* TODO: show error messages when the api returns them */
     const { data, errors } = await getCities(value);
     setLoading(false);
 
@@ -59,9 +60,9 @@ export default function InputSearch() {
 
   async function searchCity(option) {
     const { latitude, longitude } = option;
-    console.log(latitude, longitude);
     setLoading(true);
 
+    /* TODO: show error messages when the api returns them */
     const { data, errors } = await getForecastByCoordinates(
       latitude,
       longitude
@@ -79,7 +80,10 @@ export default function InputSearch() {
   return (
     <div className="relative">
       {searchByCoordinates ? (
-        <form onSubmit={handleCoordinates} className="flex gap-2">
+        <form
+          onSubmit={handleCoordinates}
+          className="flex flex-col md:flex-row gap-2"
+        >
           <Input
             value={coordinates.latitude}
             onChange={({ target }) =>
@@ -97,7 +101,9 @@ export default function InputSearch() {
             required
             placeholder="Longitude"
           />
-          <Button type="submit">Search</Button>
+          <Button type="submit" className="w-[7.5rem]" disabled={loading}>
+            {loading ? "⏳️" : "Search"}
+          </Button>
         </form>
       ) : (
         <InputOptions

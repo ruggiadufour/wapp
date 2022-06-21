@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../components/Button";
-import DaysForecastSumary from "../components/DaysForecastSumary";
+import DaysForecastSumary from "../components/DaysForecastSummary";
 import { removeCity } from "../store/forecast";
 import { formatDate } from "../utils/helpers";
 
@@ -21,15 +21,15 @@ export default function Search() {
 
   if (!searches.length) {
     return (
-      <h1 className="text-7xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+      <h1 className="text-3xl md:text-7xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
         Please, search a city.
       </h1>
     );
   }
 
   return (
-    <div className="max-w-5xl w-full">
-      <h1 className="text-5xl w-fit font-medium text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-8">
+    <article className="max-w-5xl w-full">
+      <h1 className="text-3xl md:text-5xl w-fit font-medium text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-8">
         Your searches:
       </h1>
 
@@ -39,16 +39,18 @@ export default function Search() {
             className="relative bg-slate-700 w-full p-4 rounded"
             key={city.id}
           >
-            <h2 className="text-4xl text-purple-300">
+            <h2 className="text-2xl md:text-4xl text-purple-300">
               {city.name} ({city.country})
             </h2>
             <DaysForecastSumary forecasts={city.list} />
             <button
               title="Delete city"
               onClick={() => deleteSearch(city.id)}
-              className="absolute top-[20px] right-[20px] font-medium text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
+              className="absolute top-[15px] right-[15px] font-medium  bg-slate-600 p-1"
             >
-              ❌️
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+                ❌️
+              </span>
             </button>
           </div>
         ))}
@@ -56,6 +58,6 @@ export default function Search() {
       {searches.length < 5 && (
         <Button onClick={searchMore}>Search more cities</Button>
       )}
-    </div>
+    </article>
   );
 }

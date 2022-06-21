@@ -8,7 +8,7 @@ function App() {
     <div className="h-screen flex flex-col">
       <Router>
         <Navbar />
-        <div className="bg-slate-600 flex-1 flex items-center justify-center p-7">
+        <div className="bg-slate-600 flex-1 flex md:items-center justify-center p-7">
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/search" element={<Search />} />

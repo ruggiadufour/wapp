@@ -3,22 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   searches: [],
   homePreview: {
+    id: null,
     name: "",
     country: "",
-    forecasts: [
-      {
-        date: "",
-        temp: "",
-        feels_like: "",
-        temp_min: "",
-        temp_max: "",
-        pressure: "",
-        humidity: "",
-        weather: "",
-        description: "",
-        icon: "",
-      },
-    ],
+    list: [],
   },
 };
 
@@ -42,9 +30,12 @@ export const forecastSlice = createSlice({
         (search) => search.id !== action.payload
       );
     },
+    setHomePreview: (state, action) => {
+      state.homePreview = action.payload;
+    },
   },
 });
 
-export const { addCity, removeCity } = forecastSlice.actions;
+export const { addCity, removeCity, setHomePreview } = forecastSlice.actions;
 
 export default forecastSlice.reducer;

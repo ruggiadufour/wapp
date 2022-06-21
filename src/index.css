@@ -34,3 +34,10 @@ code {
 *::-webkit-scrollbar-thumb:hover {
   background: #db2777;
 }
+
+@media (max-width: 764px) {
+  *::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+}
