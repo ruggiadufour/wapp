@@ -43,7 +43,7 @@ export default function InputSearch() {
 
   function getFormatedData(options) {
     return options.map((option, i) => ({
-      name: `${option.locality}, ${option.region} (${option.country_code})`,
+      name: option.label,
       id: `${option.label}-${i}`,
       longitude: option.longitude,
       latitude: option.latitude,
@@ -51,10 +51,10 @@ export default function InputSearch() {
   }
 
   function handleChange(e) {
-    setLoading(true);
-
     const { value } = e.target;
     setCityName(value);
+    if (!value) return;
+    setLoading(true);
     onDebouncedChange(value);
   }
 
@@ -82,7 +82,7 @@ export default function InputSearch() {
       {searchByCoordinates ? (
         <form
           onSubmit={handleCoordinates}
-          className="flex flex-col md:flex-row gap-2"
+          className="flex flex-col md:flex-row gap-2 items-center"
         >
           <Input
             value={coordinates.latitude}

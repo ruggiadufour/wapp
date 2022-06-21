@@ -1,10 +1,11 @@
 import React from "react";
 import InputSearch from "./InputSearch";
 import { Link } from "react-router-dom";
+import Button from "./Button";
 
 export default function Navbar() {
   return (
-    <nav className="bg-slate-800 py-4 md:px-20">
+    <nav className="relative bg-slate-800 py-4 md:px-20">
       <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
         <Link to="/">
           <span className="text-4xl">
@@ -15,6 +16,13 @@ export default function Navbar() {
           </span>
         </Link>
         <InputSearch />
+        <div className="relative sm:absolute sm:right-[20px]">
+          <Link to="/search">
+            <Button title="My searches" className="to-purple-400">
+              🔎️
+            </Button>
+          </Link>
+        </div>
       </div>
     </nav>
   );
